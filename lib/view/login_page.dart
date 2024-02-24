@@ -1,3 +1,4 @@
+import 'package:fit_frenzyy/view/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fit_frenzyy/components/cusTextfield.dart';
 import 'package:fit_frenzyy/components/cusButton.dart';
@@ -51,8 +52,20 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Text("Don't have an Account?"),
                 SizedBox(width: 4,),
-                Text("Register Now!",
-                style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold),)
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SignupPage(
+                          onTap: () {},
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text("Register Now!",
+                  style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold),),
+                )
               ],
             )
 

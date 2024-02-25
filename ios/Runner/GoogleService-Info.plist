@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyB8KxtdZv32H2XNO4iTLpmZrZxBNd8p95c</string>
+	<key>GCM_SENDER_ID</key>
+	<string>788381784593</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.fitFrenzyy</string>
+	<key>PROJECT_ID</key>
+	<string>fitfrenzy-a602a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fitfrenzy-a602a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:788381784593:ios:f72d0ea4644c9c2d56efb0</string>
+</dict>
+</plist>

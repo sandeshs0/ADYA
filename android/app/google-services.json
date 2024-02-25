@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "788381784593",
+    "project_id": "fitfrenzy-a602a",
+    "storage_bucket": "fitfrenzy-a602a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:788381784593:android:0bd26103cf347e1356efb0",
+        "android_client_info": {
+          "package_name": "com.example.fit_frenzyy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGbD1Z1ErTllGyH-8ZB4ui_TvjKQsXOV8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

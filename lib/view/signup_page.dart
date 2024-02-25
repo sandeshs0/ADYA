@@ -1,34 +1,109 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fit_frenzyy/components/cusTextfield.dart';
 import 'package:fit_frenzyy/components/cusButton.dart';
-import 'package:fit_frenzyy/main.dart';
 import 'package:fit_frenzyy/view/login_page.dart';
-
 
 class SignupPage extends StatefulWidget {
   final Function()? onTap;
-  SignupPage({super.key, required this.onTap});
+
+  SignupPage({required this.onTap});
 
   @override
   State<SignupPage> createState() => _SignupPageState();
 }
 
-
 class _SignupPageState extends State<SignupPage> {
-
   // Controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  void signUp() async {
+    // Show loading circle
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
 
-  void signUp(){
+    // Try creating the user
+    try {
+      if (passwordController.text == confirmPasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        Navigator.pop(context);
+        showSuccessMessage();
+      } else {
+        Navigator.pop(context);
+        showErrorMessage("Password doesn't Match");
+      }
+      // Successfully signed up
 
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => LoginPage(),
+      //   ),
+      // );
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      // Show error message
+      showErrorMessage(e.code);
+    }
+  }
+
+  // Show error message
+  void showErrorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Center(
+            child: Text(
+              message,
+              style: const TextStyle(color: Colors.black),
+            ),
+          ),
+        );
+      },
+    );
+  }
+  void showSuccessMessage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Center(
+            child: Text(
+              "Signup Successful!",
+              style: const TextStyle(color: Colors.black),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+                Navigator.pop(context); // Pop SignupPage off the navigation stack
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,// Make the scaffold background transparent
+      backgroundColor: Colors.white,
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -37,16 +112,12 @@ class _SignupPageState extends State<SignupPage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Image.asset(
                     "lib/images/1.png",
                     width: 300,
                   ),
-                  SizedBox(
-                    height: 2,
-                  ),
+                  SizedBox(height: 2),
                   Center(
                     child: Text(
                       "Create an Account",
@@ -58,7 +129,6 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   ),
 
-                  //email textfield
                   SizedBox(height: 25),
                   MyTextField(
                     controller: emailController,
@@ -66,103 +136,43 @@ class _SignupPageState extends State<SignupPage> {
                     obscureText: false,
                   ),
 
-                  //
-
-                  //password textfield
-                  SizedBox(
-                    height: 25,
-                  ),
+                  SizedBox(height: 25),
                   MyTextField(
                     controller: passwordController,
                     hintText: "Password",
                     obscureText: true,
                   ),
 
-                  //confirm password textfield
-                  SizedBox(
-                    height: 25,
-                  ),
+                  SizedBox(height: 25),
                   MyTextField(
                     controller: confirmPasswordController,
                     hintText: "Confirm Password",
                     obscureText: true,
                   ),
 
-                  //forgot password
-                  SizedBox(height: 20),
-
                   SizedBox(height: 20),
                   MyButton(
-                    text: 'Sign in',
+                    text: 'Create',
                     onTap: signUp,
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Already have and account?",
-                        style: TextStyle(color: MyApp.textColor, fontSize: 15),
+                        "Already have an account?",
+                        style: TextStyle(color: Colors.black, fontSize: 15),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginPage(
-                                onTap: () {},
-                              ),
-                            ),
-                          );
-                        },
+                        onTap: widget.onTap,
                         child: Text(
                           " Login Now",
-                          style: TextStyle(color: MyApp.btnColor, fontSize: 18),
+                          style: TextStyle(color: Colors.indigo, fontSize: 18),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            thickness: 0.3,
-                            color: MyApp.textColor,
-                          ),
-                        ),
-                        Text(
-                          "Or Continue with",
-                          style: TextStyle(color: MyApp.textColor),
-                        ),
-                        Expanded(
-                          child: Divider(
-                            thickness: 0.3,
-                            color: MyApp.textColor,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "lib/image/image8-2.webp",
-                        height: 100,
-                        width: 120,
-                      ),
-                    ],
-                  ),
+                  SizedBox(height: 30),
                 ],
               ),
             ),

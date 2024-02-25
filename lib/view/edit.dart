@@ -40,39 +40,41 @@ class _EditScreenState extends State<EditScreen> {
 
     if (title.isNotEmpty && content.isNotEmpty) {
       try {
-
-        // Get the current user's ID
         String? userId = await getCurrentUserId();
-
         if (userId != null) {
-          // Get a reference to the Realtime Database
-          DatabaseReference databaseReference = FirebaseDatabase.instance.reference().child('Users').child(userId).child('Notes');
+          DatabaseReference databaseReference = FirebaseDatabase.instance
+              .reference()
+              .child('Users')
+              .child(userId)
+              .child('Notes');
 
-          // Generate a new unique key for the note
-          String key = databaseReference.push().key!; // Use '!' to assert non-nullability
-
-          // Construct the note data
+          String key = databaseReference.push().key!;
           Map<String, dynamic> noteData = {
             'title': title,
             'content': content,
-            'timestamp': ServerValue.timestamp, // Add a server timestamp
+            'timestamp': ServerValue.timestamp,
           };
 
-          // Save the note under the generated key
           await databaseReference.child(key).set(noteData);
-
-          // Close the screen
           Navigator.pop(context);
         } else {
-          // Handle the case when userId is null
           print('User ID is null');
+          // Handle the case when the user ID is null (user not authenticated)
         }
       } catch (e) {
         print('Error saving note: $e');
-        // Optionally, show an error message to the user
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error saving note. Please try again later.'),
+          ),
+        );
       }
     } else {
-      // Optionally, show a message indicating that title and content cannot be empty
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Title and content cannot be empty.'),
+        ),
+      );
     }
   }
 
@@ -80,8 +82,8 @@ class _EditScreenState extends State<EditScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF9E8C9),
-    body: Padding(
+      backgroundColor: Colors.white,
+      body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 40, 16, 0),
         child: Column(children: [
           Row(
@@ -96,7 +98,7 @@ class _EditScreenState extends State<EditScreen> {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                        color: Colors.grey.shade800.withOpacity(.8),
+                        color: Colors.black .withOpacity(.8),
                         borderRadius: BorderRadius.circular(10)),
                     child: const Icon(
                       Icons.arrow_back_ios_new,
@@ -108,29 +110,25 @@ class _EditScreenState extends State<EditScreen> {
           Expanded(
               child: ListView(
                 children: [
-                  Center(
-                    child: TextField(
-                      controller: _titleController,
-                      style: const TextStyle(color: Colors.blueGrey, fontSize: 20),
-                      decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Mood',
-                          hintStyle: TextStyle(color: Colors.grey, fontSize: 20)),
-                    ),
+                  TextField(
+                    controller: _titleController,
+                    style: const TextStyle(color: Colors.black, fontSize: 40),
+                    decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Title',
+                        hintStyle: TextStyle(color: Colors.black, fontSize: 50)),
                   ),
-                  const SizedBox(height: 30,),
                   TextField(
                     controller: _contentController,
                     style: const TextStyle(
-                      color: Color(0xFF332941),
-                      fontSize: 26,
+                        color: Colors.black,fontSize:22
                     ),
                     maxLines: null,
                     decoration: const InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Start writing your day...',
+                        hintText: 'Type something here',
                         hintStyle: TextStyle(
-                          color: Colors.grey,
+                          color: Colors.black,
                         )),
                   ),
                 ],
@@ -144,8 +142,7 @@ class _EditScreenState extends State<EditScreen> {
               context, [_titleController.text, _contentController.text]);
         },
         elevation: 10,
-        backgroundColor: Color(0xFF40679E)
-        ,
+        backgroundColor: const Color(0xFFF5E6CC),
         child: const Icon(Icons.save),
       ),
     );

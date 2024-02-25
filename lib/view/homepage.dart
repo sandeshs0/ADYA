@@ -9,36 +9,23 @@ import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
 class _HomePageState extends State<HomePage> {
-  final user=FirebaseAuth.instance.currentUser!;
   List<Journal> filteredNotes = [];
   bool sorted = false;
-  final databaseReference = FirebaseDatabase.instance.reference();
-
+  // final databaseReference = FirebaseDatabase.instance.reference();
 
   @override
   void initState() {
     super.initState();
-    // _getNotes();
+    filteredNotes = sampleNotes;
   }
-  // void _getNotes() async {
-  //   DataSnapshot snapshot = await databaseReference.child('users/${user.uid}/notes').once();
-  //   Map<dynamic, dynamic> notesMap = snapshot.value;
-  //   notesMap.forEach((key, value) {
-  //     Journal note = Journal.fromMap(value);
-  //     setState(() {
-  //       filteredNotes.add(note);
-  //     });
-  //   });
-  // }
   void LogOut(){
     FirebaseAuth.instance.signOut();
   }
+
   List<Journal> sortNotesByModifiedTime(List<Journal> notes) {
     if (sorted) {
       notes.sort((a, b) => a.modifiedTime.compareTo(b.modifiedTime));
@@ -64,7 +51,19 @@ class _HomePageState extends State<HomePage> {
       sampleNotes.remove(note);
       filteredNotes.removeAt(index);
     });
+    //
+    // try {
+    //   // Remove the note from the database
+    //   await databaseReference
+    //       .child('users/${user.uid}/notes/${filteredNotes[index].id}')
+    //       .remove();
+    // } catch (e) {
+    //   // Handle any errors
+    //   print("Error deleting note: $e");
+    // }
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,9 +76,10 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'ADYA', //meaning: yesterday lai yaha, today lai adya, tomorow lai shvaha
+                  'ADYA',
                   style: TextStyle(fontSize: 30, color: Colors.indigo, fontWeight: FontWeight.bold),
                 ),
+                const SizedBox(width: 40,),
                 IconButton(
                     onPressed: () {
                       LogOut();
@@ -201,13 +201,14 @@ class _HomePageState extends State<HomePage> {
                             onPressed: () async {
                               final result = await confirmDialog(context);
                               if (result != null && result) {
-                                deleteNote(index);
+                                deleteNote(index); // Call deleteNote function when delete button is pressed
                               }
                             },
                             icon: const Icon(
                               Icons.delete,
                             ),
                           ),
+
                         ),
                       ),
                     );
@@ -252,14 +253,14 @@ Future<dynamic> confirmDialog(BuildContext context) {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.grey.shade900,
+          backgroundColor: Colors.white,
           icon: const Icon(
             Icons.info,
             color: Colors.grey,
           ),
           title: const Text(
             'Are you sure you want to delete?',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.black),
           ),
           content: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
